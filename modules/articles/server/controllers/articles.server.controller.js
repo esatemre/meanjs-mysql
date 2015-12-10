@@ -30,7 +30,7 @@ exports.create = function (req, res) {
  * Show the current article
  */
 exports.read = function (req, res) {
-  res.jsonp(req.article);
+  res.json(req.article);
 };
 
 /**
@@ -86,8 +86,6 @@ exports.list = function (req, res) {
  * Article middleware
  */
 exports.articleByID = function (req, res, next, id) {
-
-  console.log('id => ' + id);
   db.Article.find({ where: {id: id}, include: [db.User]}).then(function(article){
     if(!article) {
       return next(new Error('Failed to load article ' + id));

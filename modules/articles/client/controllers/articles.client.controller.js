@@ -23,7 +23,7 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$statePa
 
       // Redirect after save
       article.$save(function (response) {
-        $location.path('articles/' + response._id);
+        $location.path('articles/' + response.id);
 
         // Clear form fields
         $scope.title = '';
@@ -63,7 +63,7 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$statePa
       var article = $scope.article;
 
       article.$update(function () {
-        $location.path('articles/' + article._id);
+        $location.path('articles/' + article.id);
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
@@ -76,9 +76,7 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$statePa
 
     // Find existing Article
     $scope.findOne = function () {
-      $scope.article = Articles.get({
-        articleId: $stateParams.articleId
-      });
+        $scope.article = Articles.get({articleId: $stateParams.articleId});
     };
   }
 ]);

@@ -17,9 +17,9 @@ angular.module('core').service('Menus', [
         if(!user) {
           return false;
         }
-        for (var userRoleIndex in user.roles) {
+        for (var userRoleIndex in user.roles.split(',')) {
           for (var roleIndex in this.roles) {
-            if (this.roles[roleIndex] === user.roles[userRoleIndex]) {
+            if (this.roles[roleIndex] === user.roles.split(',')[userRoleIndex]) {
               return true;
             }
           }

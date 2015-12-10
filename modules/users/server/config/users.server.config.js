@@ -23,8 +23,6 @@ module.exports = function (app, db) {
       if(!user){
         return done(null, false);
       }
-      user.roles = ['admin'];
-        console.log('admin');
       done(null, user);
     }).catch(function(err){
       done(err, null);

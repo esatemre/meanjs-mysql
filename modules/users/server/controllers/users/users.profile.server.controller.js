@@ -95,6 +95,5 @@ exports.changeProfilePicture = function (req, res) {
  * Send User
  */
 exports.me = function (req, res) {
-  req.user.roles = ['user'];
   res.jsonp(req.user || null);
 };

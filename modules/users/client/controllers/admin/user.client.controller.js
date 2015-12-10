@@ -30,7 +30,7 @@ angular.module('users.admin').controller('UserController', ['$scope', '$state', 
 
       user.$update(function () {
         $state.go('admin.user', {
-          userId: user._id
+          userId: user.id
         });
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;

@@ -4,7 +4,6 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
   function ($scope, $state, Authentication, Menus) {
     // Expose view variables
     $scope.$state = $state;
-    //Authentication.user.roles = ['user'];
     $scope.authentication = Authentication;
 
     // Get the topbar menu

@@ -15,7 +15,7 @@ angular.module('users').factory('Users', ['$resource',
 angular.module('users.admin').factory('Admin', ['$resource',
   function ($resource) {
     return $resource('api/users/:userId', {
-      userId: '@_id'
+      userId: '@id'
     }, {
       update: {
         method: 'PUT'

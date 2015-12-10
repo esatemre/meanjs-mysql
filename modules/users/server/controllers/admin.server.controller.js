@@ -10,7 +10,7 @@ var path = require('path'),
  * Show the current user
  */
 exports.read = function (req, res) {
-  res.json(req.model);
+    res.jsonp(req.model || null);
 };
 
 /**
@@ -72,6 +72,6 @@ exports.userByID = function (req, res, next, id) {
     req.model = user;
     next();
   }).catch(function(err){
-    next(err);
+    return next(err);
   });
 };

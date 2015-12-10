@@ -24,7 +24,11 @@ module.exports = function(sequelize, DataTypes) {
             openId: DataTypes.STRING,
             avatar: {
                 type: DataTypes.STRING,
-                default: 'modules/users/client/img/profile/default.png'
+                defaultValue: 'modules/users/client/img/profile/default.png'
+            },
+            roles: {
+                type: DataTypes.STRING,
+                defaultValue: 'user'
             }
         },
         {
