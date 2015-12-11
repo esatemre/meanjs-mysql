@@ -31,7 +31,7 @@ $ npm install -g grunt-cli
 
 ### Cloning The GitHub Repository
 ```bash
-$ git clone https://github.com/meanjs/mean.git meanjs
+$ git clone https://github.com/esatemre/meanjs-mysql.git meanjs
 ```
 OR
 ### [Download](https://github.com/esatemre/meanjs-mysql/archive/master.zip)ing The Repository Zip File
