@@ -9,7 +9,7 @@ var config = require('../config'),
   cookieParser = require('cookie-parser'),
   passport = require('passport'),
   socketio = require('socket.io'),
-  session = require('express-session');
+  MysqlStore = require('express-mysql-session');
 
 // Define the Socket.io configuration method
 module.exports = function (app, db) {
@@ -59,6 +59,13 @@ module.exports = function (app, db) {
   // Create a new Socket.io server
   var io = socketio.listen(server);
 
+  var mysqlStore = new MysqlStore({
+        host: config.db.options.host,
+        port: config.db.options.port,
+        user: config.db.username,
+        password: config.db.password,
+        database: config.db.name
+    });
   // Intercept Socket.io's handshake request
   io.use(function (socket, next) {
     // Use the 'cookie-parser' module to parse the request cookies
@@ -68,8 +75,8 @@ module.exports = function (app, db) {
 
       if (!sessionId) return next(new Error('sessionId was not found in socket.request'), false);
 
-      // Use the mysql instance to get the Express session information (BUG) Socket Session
-      /*mysqlStore.get(sessionId, function (err, session) {
+      // Use the mysql instance to get the Express session information
+      mysqlStore.get(sessionId, function (err, session) {
         if (err) return next(err, false);
         if (!session) return next(new Error('session was not found for ' + sessionId), false);
 
@@ -86,7 +93,7 @@ module.exports = function (app, db) {
             }
           });
         });
-      });*/
+      });
     });
   });
 
