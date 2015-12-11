@@ -39,8 +39,8 @@ exports.forgot = function (req, res, next) {
             });
           } else {
             /** (Bug) Reset Password Token */
-/*            user.resetPasswordToken = token;
-            user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+/*            user.token = token;
+
             user.save(function (err) {
               done(err, token, user);
             });
@@ -98,23 +98,22 @@ exports.forgot = function (req, res, next) {
 };
 
 /**
- * Reset password GET from email token (BUG) Validate Reset Token
+ * Reset password GET from email token (TODO)
  */
-/*
-exports.validateResetToken = function (req, res) {
-  User.findOne({
-    resetPasswordToken: req.params.token,
-    resetPasswordExpires: {
-      $gt: Date.now()
-    }
-  }, function (err, user) {
-    if (!user) {
-      return res.redirect('/password/reset/invalid');
-    }
 
-    res.redirect('/password/reset/' + req.params.token);
+exports.validateResetToken = function (req, res) {
+  db.ResetPass.find({where : {
+    token: req.params.token,
+    createdAt: {
+      gte: Date.now() + 3600000 // 1 hour
+    }
+  }}).then(function (user) {
+     if (!user) {
+        return res.redirect('/password/reset/invalid');
+     }
+     res.redirect('/password/reset/' + req.params.token);
   });
-};*/
+};
 
 /**
  * Reset password POST from email token (BUG) Reset
@@ -129,7 +128,7 @@ exports.reset = function (req, res, next) {
 
     function (done) {
       User.findOne({
-        resetPasswordToken: req.params.token,
+        token: req.params.token,
         resetPasswordExpires: {
           $gt: Date.now()
         }

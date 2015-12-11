@@ -12,7 +12,7 @@ var _ = require('lodash'),
   config = require(path.resolve('./config/config'));
 
 /**
- * Update user details (BUG) must be changed
+ * Update user details
  */
 exports.update = function (req, res) {
   // Init Variables
@@ -25,7 +25,9 @@ exports.update = function (req, res) {
     // Merge existing user
     user = _.extend(user, req.body);
     user.updateAttributes({
-      fullname: user.fullname
+      fullname: user.fullname,
+      email: user.email,
+      username: user.username
     }).then(function(user){
       req.login(user, function (err) {
         if (err) {
