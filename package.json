@@ -1,14 +1,14 @@
 {
-  "name": "meanjs",
-  "description": "Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js.",
-  "version": "0.4.2",
+  "name": "meanjs-mysql",
+  "description": "Full-Stack JavaScript with MySQL, Express, AngularJS, and Node.js.",
+  "version": "0.1.0",
   "meanjs-version": "0.4.2",
   "private": false,
-  "author": "https://github.com/meanjs/mean/graphs/contributors",
+  "author": "https://github.com/esatemre/meanjs-mysql/graphs/contributors",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/meanjs/mean.git"
+    "url": "https://github.com/esatemre/meanjs-mysql.git"
   },
   "engines": {
     "node": ">=0.12.0",
@@ -28,7 +28,6 @@
     "chalk": "^1.1.0",
     "compression": "^1.5.0",
     "connect-flash": "~0.1.1",
-    "connect-mongo": "~0.8.1",
     "consolidate": "~0.13.1",
     "cookie-parser": "^1.3.2",
     "crypto": "0.0.3",
