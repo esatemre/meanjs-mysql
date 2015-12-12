@@ -1,13 +1,13 @@
-It's completely copied from [MEAN.JS Stack](https://github.com/meanjs/mean) just for implementing MySQL
-
+It's completely copied from [MEAN.JS Stack](https://github.com/meanjs/mean) (v0.4.2) just replaced MySQL instead of MongoDB.
+Why MySQL? Because It's RDBMS.
 
 ## Bugs
-- OAuth codes are commented. It should be changed.
-- Reset Password Module is commented. It will be implemented.
+- There is no Helper function to save or update a OAuth user profile and Remove OAuth provider.
+- Reset Password isn't working.
 
 ## ToDo
 - Some unnecessary files should be cleaned.
-
+- Solve Bugs
 
 ## Prerequisites
 Make sure you have installed all of the following prerequisites on your development machine:
