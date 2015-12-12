@@ -25,7 +25,7 @@ module.exports = function () {
       }
       return done(null, user);
     }).catch(function (err) {
-        return done(err);
+      return done(err);
     });
   }));
 };

@@ -1,7 +1,7 @@
 {
   "name": "meanjs",
-  "description": "Fullstack JavaScript with MongoDB, Express, AngularJS, and Node.js.",
-  "homepage": "http://meanjs.org/",
+  "description": "Fullstack JavaScript with MySQL, Express, AngularJS, and Node.js.",
+  "homepage": "https://github.com/esatemre/meanjs-mysql",
   "license": "MIT",
   "dependencies": {
     "bootstrap": "~3",

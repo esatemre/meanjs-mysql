@@ -37,9 +37,9 @@ exports.update = function (req, res) {
         }
       });
     }).catch(function (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
     });
   } else {
     res.status(400).send({
@@ -80,9 +80,9 @@ exports.changeProfilePicture = function (req, res) {
             }
           });
         }).catch(function (saveError) {
-            return res.status(400).send({
-              message: errorHandler.getErrorMessage(saveError)
-            });
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(saveError)
+          });
         });
       }
     });

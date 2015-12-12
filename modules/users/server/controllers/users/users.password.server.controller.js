@@ -27,27 +27,31 @@ exports.forgot = function (req, res, next) {
     // Lookup user by username
     function (token, done) {
       if (req.body.username) {
-        db.User.find({where : { username: req.body.username.toLowerCase() }})
+        db.User.find({ where : { username: req.body.username.toLowerCase() } })
             .then(function (user) {
-          if (!user) {
-            return res.status(400).send({
-              message: 'No account with that username has been found'
+              if (!user) {
+                return res.status(400).send({
+                  message: 'No account with that username has been found'
+                });
+              } else if (user.provider !== 'local') {
+                return res.status(400).send({
+                  message: 'It seems like you signed up using your ' + user.provider + ' account'
+                });
+              } else {
+                //Create Reset Token
+                db.ResetPass.create({ token:token,userId:user.id }).then(function(reset){
+                  if(!reset){
+                    return res.status(400).send({
+                      message: 'You cannot reset your password'
+                    });
+                  } else {
+                    done(undefined, token, user);
+                  }
+                }).catch(function(err){
+                  done(err, token, user);
+                });
+              }
             });
-          } else if (user.provider !== 'local') {
-            return res.status(400).send({
-              message: 'It seems like you signed up using your ' + user.provider + ' account'
-            });
-          } else {
-            /** (Bug) Reset Password Token */
-/*            user.token = token;
-
-            user.save(function (err) {
-              done(err, token, user);
-            });
-            */
-            done(undefined, token, user);
-          }
-        });
       } else {
         return res.status(400).send({
           message: 'Username field must not be blank'
@@ -98,27 +102,27 @@ exports.forgot = function (req, res, next) {
 };
 
 /**
- * Reset password GET from email token (TODO)
+ * Reset password GET from email token
  */
 
 exports.validateResetToken = function (req, res) {
-  db.ResetPass.find({where : {
+  db.ResetPass.find({ where : {
     token: req.params.token,
     createdAt: {
       gte: Date.now() + 3600000 // 1 hour
     }
-  }}).then(function (user) {
-     if (!user) {
-        return res.redirect('/password/reset/invalid');
-     }
-     res.redirect('/password/reset/' + req.params.token);
+  } }).then(function (user) {
+    if (!user) {
+      return res.redirect('/password/reset/invalid');
+    }
+    res.redirect('/password/reset/' + req.params.token);
   });
 };
 
 /**
- * Reset password POST from email token (BUG) Reset
+ * Reset password POST from email token
  */
-/*
+
 exports.reset = function (req, res, next) {
   // Init Variables
   var passwordDetails = req.body;
@@ -127,54 +131,66 @@ exports.reset = function (req, res, next) {
   async.waterfall([
 
     function (done) {
-      User.findOne({
-        token: req.params.token,
-        resetPasswordExpires: {
-          $gt: Date.now()
-        }
-      }, function (err, user) {
-        if (!err && user) {
-          if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
-            user.password = passwordDetails.newPassword;
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
-
-            user.save(function (err) {
-              if (err) {
-                return res.status(400).send({
-                  message: errorHandler.getErrorMessage(err)
-                });
-              } else {
-                req.login(user, function (err) {
-                  if (err) {
-                    res.status(400).send(err);
+      //Find Reset Token
+      db.ResetPass.find({ where : { token: req.params.token } }).then(function (reset) {
+        if(reset){
+          //Find User
+          db.User.find({ where: { id: reset.userId } }).then(
+              function(user){
+                if (user) {
+                  if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
+                    //Update Password
+                    user.updateAttributes({
+                      password: user.encryptPassword(passwordDetails.newPassword, user.salt)
+                    }).then(function(a){
+                      //Login User
+                      req.login(user, function (err) {
+                        if (err) {
+                          res.status(400).send(err);
+                        } else {
+                          // Remove sensitive data before return authenticated user
+                          user.password = undefined;
+                          user.salt = undefined;
+                          res.json(user);
+                          //Remove Reset Token
+                          reset.destroy().then(function(){
+                            done(err, user);
+                          }).catch(function(err){
+                            res.status(400).send(err);
+                          });
+                        }
+                      });
+                    }).catch(function(err){
+                      return res.status(400).send({
+                        message: 'Sorry, It was unsuccessful'
+                      });
+                    });
                   } else {
-                    // Remove sensitive data before return authenticated user
-                    user.password = undefined;
-                    user.salt = undefined;
-
-                    res.json(user);
-
-                    done(err, user);
+                    return res.status(400).send({
+                      message: 'Passwords do not match'
+                    });
                   }
-                });
+                } else {
+                  return res.status(400).send({
+                    message: 'Password reset token is invalid or has expired.'
+                  });
+                }
               }
-            });
-          } else {
-            return res.status(400).send({
-              message: 'Passwords do not match'
-            });
-          }
-        } else {
+          );
+        }else{
           return res.status(400).send({
             message: 'Password reset token is invalid or has expired.'
           });
         }
+      }).catch(function (err){
+        return res.status(400).send({
+          message: 'Password reset token is invalid or has expired.'
+        });
       });
     },
     function (user, done) {
       res.render('modules/users/server/templates/reset-password-confirm-email', {
-        name: user.displayName,
+        name: user.fullname,
         appName: config.app.title
       }, function (err, emailHTML) {
         done(err, emailHTML, user);
@@ -199,7 +215,7 @@ exports.reset = function (req, res, next) {
     }
   });
 };
-*/
+
 /**
  * Change Password
  */
@@ -210,12 +226,12 @@ exports.changePassword = function (req, res, next) {
 
   if (req.user) {
     if (passwordDetails.newPassword) {
-      db.User.find({where : { id: req.user.id }}).then(function (user) {
+      db.User.find({ where : { id: req.user.id } }).then(function (user) {
         if (user) {
           if (user.authenticate(passwordDetails.currentPassword)) {
             if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
               user.updateAttributes({
-                password : passwordDetails.newPassword
+                password : user.encryptPassword(passwordDetails.newPassword, user.salt)
               }).then(function (err) {
                 if (err) {
                   return res.status(400).send({

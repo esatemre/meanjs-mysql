@@ -10,7 +10,7 @@ var path = require('path'),
  * Show the current user
  */
 exports.read = function (req, res) {
-    res.jsonp(req.model || null);
+  res.jsonp(req.model || null);
 };
 
 /**
@@ -65,7 +65,7 @@ exports.list = function (req, res) {
  * User middleware
  */
 exports.userByID = function (req, res, next, id) {
-  db.User.find({where : { id: id }}).then(function(user){
+  db.User.find({ where : { id: id } }).then(function(user){
     if (!user) {
       return next(new Error('Failed to load User ' + id));
     }

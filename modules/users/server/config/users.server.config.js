@@ -19,7 +19,7 @@ module.exports = function (app, db) {
 
   // Deserialize sessions
   passport.deserializeUser(function (id, done) {
-    seq.User.find({where: {id: id}}).then(function(user){
+    seq.User.find({ where: { id: id } }).then(function(user){
       if(!user){
         return done(null, false);
       }

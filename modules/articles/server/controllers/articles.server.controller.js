@@ -14,7 +14,7 @@ exports.create = function (req, res) {
 
   db.Article.create(req.body).then(function(article){
     if(!article){
-      return res.send('users/signup', {errors: 'Article could not be created'});
+      return res.send('users/signup', { errors: 'Article could not be created' });
     } else {
       return res.jsonp(article);
     }
@@ -72,7 +72,7 @@ exports.delete = function (req, res) {
  * List of Articles
  */
 exports.list = function (req, res) {
-  db.Article.findAll({include: [db.User]}).then(function(articles){
+  db.Article.findAll({ include: [db.User] }).then(function(articles){
     return res.jsonp(articles);
   }).catch(function(err){
     return res.render('error', {
@@ -86,7 +86,7 @@ exports.list = function (req, res) {
  * Article middleware
  */
 exports.articleByID = function (req, res, next, id) {
-  db.Article.find({ where: {id: id}, include: [db.User]}).then(function(article){
+  db.Article.find({ where: { id: id }, include: [db.User] }).then(function(article){
     if(!article) {
       return next(new Error('Failed to load article ' + id));
     } else {

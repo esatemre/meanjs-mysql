@@ -60,12 +60,12 @@ module.exports = function (app, db) {
   var io = socketio.listen(server);
 
   var mysqlStore = new MysqlStore({
-        host: config.db.options.host,
-        port: config.db.options.port,
-        user: config.db.username,
-        password: config.db.password,
-        database: config.db.name
-    });
+    host: config.db.options.host,
+    port: config.db.options.port,
+    user: config.db.username,
+    password: config.db.password,
+    database: config.db.name
+  });
   // Intercept Socket.io's handshake request
   io.use(function (socket, next) {
     // Use the 'cookie-parser' module to parse the request cookies

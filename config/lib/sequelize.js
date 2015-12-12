@@ -36,10 +36,10 @@ sequelize
       logging: false
     })
     .then(function () {
-      console.log("Database *DROPPED* and synchronized");
+      console.log('Database *DROPPED* and synchronized');
     }).catch(function (err) {
-  console.log("An error occurred: ", err);
-});
+      console.log('An error occurred: ', err);
+    });
 
 // assign the sequelize variables to the db object and returning the db.
 module.exports = _.extend({
