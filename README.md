@@ -1,4 +1,4 @@
-It's completely copied from [MEAN.JS Stack](https://github.com/meanjs/mean) (v0.4.2) just replaced MySQL instead of MongoDB.
+It's copied from [MEAN.JS Stack](https://github.com/meanjs/mean) (v0.4.2) just replaced MySQL instead of MongoDB.
 Why MySQL? Because It's RDBMS.
 
 ## Bugs
@@ -6,7 +6,6 @@ Why MySQL? Because It's RDBMS.
 - Reset Password isn't working.
 
 ## ToDo
-- Some unnecessary files should be cleaned.
 - Solve Bugs
 
 ## Prerequisites
